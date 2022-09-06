@@ -4,12 +4,22 @@ require_relative 'frame'
 require_relative 'shot'
 
 class Game
-  def initialize(score_numbers)
+  def initialize(score_texts)
     @frames = []
-    frame_marks = score_numbers.each_slice(2).to_a
-    frame_marks.each_index do |index|
-      @frames << Frame.new(frame_marks[index][0], frame_marks[index][1], frame_marks, index)
-    end
+      scores = score_texts.split(',')
+      score_numbers = []
+      scores.each do |score_text|
+        if score_text == 'X'
+          score_numbers << 10
+        else
+          score_numbers << score_text.to_i
+        end
+      end
+    p score_numbers
+    # frame_marks = score_numbers.each_slice(2).to_a
+    # frame_marks.each_index do |index|
+    #   @frames << Frame.new(frame_marks[index][0], frame_marks[index][1], frame_marks, index)
+    # end
   end
 
   def sum_up
