@@ -14,23 +14,30 @@ class Game
         score_numbers << score_text.to_i
       end
     end
-    # スコアナンバーズを先頭から2個ずつ10個の配列に分ける。
-    # もし、10の場合は1つでよい。9つできたら、残りはひとまとめでよい。
+
     @frames = []
     frame = []
     score_numbers.each do |score_number|
       frame << score_number
       p "frame:#{frame}"
-      if frame.size == 2
+      if @frames.size < 9 && frame.size == 2
+        @frames << frame
+        frame = []
+      elsif @frames.size < 9 && score_number == 10
+        frame.size == 1
+        @frames << frame
+        frame = []
+        # 9つできたら、(残りはひとまとめでよい。)
+      elsif @frames.size == 10
+        frame.size <= 3
         @frames << frame
         frame = []
       end
-      p @frames
     end
-    # frame_marks = score_numbers.each_slice(2).to_a
-    # frame_marks.each_index do |index|
-    #   @frames << Frame.new(frame_marks[index][0], frame_marks[index][1], frame_marks, index)
-    # end
+    p @frames
+    # これも考えてみましたが、引き算のところがうまくいかない。
+    # p @frames << (score_numbers - @frames.flatten)
+
   end
 
   def sum_up
