@@ -20,12 +20,11 @@ class Game
     frame = []
     score_numbers.each do |score_number|
       frame << score_number
+      p "frame:#{frame}"
       if frame.size == 2
+        @frames << frame
         frame = []
       end
-      p "frame: #{frame}"
-      p frame.object_id
-      @frames << frame
       p @frames
     end
     # frame_marks = score_numbers.each_slice(2).to_a
