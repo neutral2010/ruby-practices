@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# require_relative 'game'
-
 class Frame
   attr_accessor :frame
 
