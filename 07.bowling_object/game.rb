@@ -7,30 +7,29 @@ class Game
 
   def initialize(score_texts)
     score_numbers = make_score_numbers(score_texts)
-    array_for_frames = make_array_for_frames(score_numbers)
-    @frames = []
-    array_for_frames.each do |array_for_frame|
-      @frames << Frame.new(array_for_frame)
-    end
-    # p @frames
+    @array_for_frames = make_array_for_frames(score_numbers)
+    @frames = @array_for_frames.map { |array_for_frame| Frame.new(array_for_frame) }
+    # p @array_for_frames
   end
 
   def calc_total_score
     total_score = []
-    # イテレーターはframeでも同じ結果となる。その際はFrameクラスを呼ぶメソッドのレシーバーもframeとする。
-    @frames.each do |f|
-      # total_score <<
-      # スペアだったら
-      p f
+    @frames.each_with_index do |f, index|
       if f.spare?
-        p 'スペア'
-      # ストライクだったら
-      # ストライクの時の計算メソッド
+        total_score << f.calc_frame + @frames[index + 1].first_shot
+      elsif f.strike? && index <= 8
+        total_score <<
+          if @frames[index + 1].second_shot == nil
+            f.calc_frame + @frames[index + 1].first_shot + @frames[index + 2].first_shot
+          else
+            f.calc_frame + @frames[index + 1].first_shot + @frames[index + 1].second_shot
+          end
+        p total_score
       else
-        p 'スペアでもストライクでもない'
+        total_score << f.calc_frame
       end
     end
-    total_score
+    total_score.sum
   end
 
   def make_score_numbers(score_texts)
@@ -42,7 +41,6 @@ class Game
     frame = []
     score_numbers.each do |score_number|
       frame << score_number
-      # p "frame:#{frame}"
       if array_for_frames.size < 9 && frame.size == 2
         array_for_frames << frame
         frame = []
@@ -57,6 +55,6 @@ class Game
         array_for_frames << frame
       end
     end
-    p array_for_frames
+    array_for_frames
   end
 end
