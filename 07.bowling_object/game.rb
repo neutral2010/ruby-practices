@@ -9,25 +9,18 @@ class Game
     score_numbers = make_score_numbers(score_texts)
     @array_for_frames = make_array_for_frames(score_numbers)
     @frames = @array_for_frames.map { |array_for_frame| Frame.new(array_for_frame) }
-    # p @array_for_frames
   end
 
   def calc_total_score
     total_score = []
-    @frames.each_with_index do |f, index|
-      if f.spare?
-        total_score << f.calc_frame + @frames[index + 1].first_shot
-      elsif f.strike? && index <= 8
-        total_score <<
-          if @frames[index + 1].second_shot == nil
-            f.calc_frame + @frames[index + 1].first_shot + @frames[index + 2].first_shot
-          else
-            f.calc_frame + @frames[index + 1].first_shot + @frames[index + 1].second_shot
-          end
-        p total_score
-      else
-        total_score << f.calc_frame
-      end
+    @frames.each_with_index do |frame, index|
+      total_score << if frame.spare?
+                       calc_spare(frame, index)
+                     elsif frame.strike? && index <= 8
+                       calc_strike(frame, index)
+                     else
+                       frame.calc_frame
+                     end
     end
     total_score.sum
   end
@@ -56,5 +49,17 @@ class Game
       end
     end
     array_for_frames
+  end
+
+  def calc_spare(frame, index)
+    frame.calc_frame + @frames[index + 1].first_shot
+  end
+
+  def calc_strike(frame, index)
+    if @frames[index + 1].second_shot.nil?
+      frame.calc_frame + @frames[index + 1].first_shot + @frames[index + 2].first_shot
+    else
+      frame.calc_frame + @frames[index + 1].first_shot + @frames[index + 1].second_shot
+    end
   end
 end
