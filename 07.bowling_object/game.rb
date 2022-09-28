@@ -34,21 +34,17 @@ class Game
     frame = []
     score_numbers.each do |score_number|
       frame << score_number
-      if (array_for_frames.size < 9) && (frame.size == 2)
+      if ((array_for_frames.size < 9) && (frame.size == 2)) || # 9投目まででスペア
+         (array_for_frames.size < 9) && (score_number == 10) # 9投目まででストライク
         array_for_frames << frame
         frame = []
-      elsif (array_for_frames.size < 9) && (score_number == 10)
-        frame.size == 1
-        array_for_frames << frame
-        frame = []
-      elsif array_for_frames.size == 9
+      elsif array_for_frames.size == 9 # 10投目
         frame = []
         frame << score_number
-        frame.size == 3
         array_for_frames << frame
       end
     end
-    array_for_frames
+    p array_for_frames
   end
 
   def calc_spare(frame, index)
@@ -56,10 +52,11 @@ class Game
   end
 
   def calc_strike(frame, index)
-    if @frames[index + 1].second_shot.nil?
-      frame.total_fallen_pins + @frames[index + 1].first_shot + @frames[index + 2].first_shot
-    else
-      frame.total_fallen_pins + @frames[index + 1].first_shot + @frames[index + 1].second_shot
-    end
+    @frames[index + 1].first_shot +
+      if @frames[index + 1].second_shot.nil?
+        @frames[index + 2].first_shot
+      else
+        @frames[index + 1].second_shot
+      end + frame.total_fallen_pins
   end
 end
