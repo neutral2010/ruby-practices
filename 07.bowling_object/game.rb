@@ -19,7 +19,7 @@ class Game
                      elsif frame.strike? && index <= 8
                        calc_strike(frame, index)
                      else
-                       frame.calc_frame
+                       frame.total_fallen_pins
                      end
     end
     total_score.sum
@@ -34,10 +34,10 @@ class Game
     frame = []
     score_numbers.each do |score_number|
       frame << score_number
-      if array_for_frames.size < 9 && frame.size == 2
+      if (array_for_frames.size < 9) && (frame.size == 2)
         array_for_frames << frame
         frame = []
-      elsif array_for_frames.size < 9 && score_number == 10
+      elsif (array_for_frames.size < 9) && (score_number == 10)
         frame.size == 1
         array_for_frames << frame
         frame = []
@@ -52,14 +52,14 @@ class Game
   end
 
   def calc_spare(frame, index)
-    frame.calc_frame + @frames[index + 1].first_shot
+    frame.total_fallen_pins + @frames[index + 1].first_shot
   end
 
   def calc_strike(frame, index)
     if @frames[index + 1].second_shot.nil?
-      frame.calc_frame + @frames[index + 1].first_shot + @frames[index + 2].first_shot
+      frame.total_fallen_pins + @frames[index + 1].first_shot + @frames[index + 2].first_shot
     else
-      frame.calc_frame + @frames[index + 1].first_shot + @frames[index + 1].second_shot
+      frame.total_fallen_pins + @frames[index + 1].first_shot + @frames[index + 1].second_shot
     end
   end
 end

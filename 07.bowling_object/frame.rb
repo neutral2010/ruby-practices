@@ -9,7 +9,7 @@ class Frame
     @second_shot  = @frame[1]
   end
 
-  def calc_frame
+  def total_fallen_pins
     @frame.sum
   end
 
