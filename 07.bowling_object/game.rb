@@ -44,7 +44,7 @@ class Game
         array_for_frames << frame
       end
     end
-    p array_for_frames
+    array_for_frames
   end
 
   def calc_spare(frame, index)
